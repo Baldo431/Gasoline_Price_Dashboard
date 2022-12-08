@@ -2,12 +2,8 @@
 
 ## **Overview**
 
-<br>
-
 ### About
 In today’s modern world, fuel is an essential part of everyday life. It helps us get to work on time, receive packages when we order products online, fuels some of the machinery that helps grow our food, and does so many more things. However, in recent events, the price of fuel has seen significant fluctuation causing worries in the average American as the price begins to take a chunk out of their wallet. Therefore, the goal of this project is to create a dashboard hosted on a webpage that will provide users with fuel related information to help them make better informed decisions.
-
-<br>
 
 ### Technologies Used
 - Python
@@ -16,17 +12,11 @@ In today’s modern world, fuel is an essential part of everyday life. It helps 
 - Supervised Learning: Linear Regression
 - Natural Language Processing: Sentiment Analysis
 
-<br>
-
 ### Current Status
 
 
-<br>
-
 ### Future Work
 
-
-<br>
 
 ### Presentation
 Link to Google Slides: click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrYTq0hdkg3Yi2Cu_y0/edit?usp=sharing)
