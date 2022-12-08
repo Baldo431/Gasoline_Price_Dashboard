@@ -67,8 +67,8 @@ def current_pricing(browser):
 
 def historical_pricing():
     # Import static csv data into dataframe
-    crude_hist_df = pd.read_csv('./Resources/crude_price_history.csv')
-    gas_hist_df = pd.read_csv('./Resources/gas_price_history.csv', header=2)
+    crude_hist_df = pd.read_csv('./Resources/data/crude_price_history.csv')
+    gas_hist_df = pd.read_csv('./Resources/data/gas_price_history.csv', header=2)
 
     # Clean gas dataframe
     gas_hist_df['Date'] = pd.to_datetime(gas_hist_df['Date'])

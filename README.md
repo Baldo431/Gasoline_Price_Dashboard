@@ -2,12 +2,11 @@
 
 ## **Overview**
 
-<br>
-
 ### About
-In today’s modern world, fuel is an essential part of everyday life. It helps us get to work on time, receive packages when we order products online, fuels some of the machinery that helps grow our food, and does so many more things. However, in recent events, the price of fuel has seen significant fluctuation causing worries in the average American as the price begins to take a chunk out of their wallet. Therefore, the goal of this project is to create a dashboard hosted on a webpage that will provide users with fuel related information to help them make better informed decisions.
+In today’s modern world, fuel is an essential part of everyday life. It helps us get to work on time, receive packages when we order products online, fuels some of the machinery that helps grow our food, and does so many more things. However, in recent events, the price of fuel has seen significant fluctuation causing worries in the average American as the price begins to take a chunk out of their wallet. 
 
-<br>
+### Goal
+The goal is to create a dashboard hosted on a webpage that will provides users with fuel related information. In particular, the dashboard will predict future gasoline prices and show a graphic representing user sentiment on twitter surrounding gasoline and oil. To compliment this information, some of the twitter posts will be showcased and the historical gasoline and oil data will be displayed on a line graph.
 
 ### Technologies Used
 - Python
@@ -16,28 +15,37 @@ In today’s modern world, fuel is an essential part of everyday life. It helps 
 - Supervised Learning: Linear Regression
 - Natural Language Processing: Sentiment Analysis
 
-<br>
-
 ### Current Status
+12/7/2022 - This week the deliverables for Segment 2 were submitted. So far, the machine learning portions and data ETL have been completed, but lack integration with one another. Additionally, not all data has been programatically added to the database.
 
+Some things to note are that:
+- No join statement was performed as the data used in this project does not require joins and is stored in a noSQL database.
+- The `twitter_data.py` file has not been integrated into the main logic. Therefore, its ouput is not currently being entered into the database.
+- The machine learning models have not been converted and consolidated into one python file and are still in ipynb format.
+- Some issues were encountered when merging, causing some of the file references to be incorrect. 
+- `logic.py` and `scraping.py` should work and showcase the connection to the database. Just note that these files require a local connection to a mongodb instance to insert data into the database.
 
-<br>
+Having said that, the deliverables can be found in the following files:
+- Presentation : clickable link in Readme.md
+- Machine Learning Model: see `gas_oil_ML.ipynb` and `twitter_NLP.ipynb`
+- Database: see `logic.py` and `scraping.py`
+- Dashboard: see Dashboard section in Readme.md or Storyboard slide on presentation.
+
 
 ### Future Work
-
+The next step is to integrate all our modules together and build out the webpage.
 
 <br>
 
 ### Presentation
-Link to Google Slides: click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrYTq0hdkg3Yi2Cu_y0/edit?usp=sharing)
+Click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrYTq0hdkg3Yi2Cu_y0/edit?usp=sharing) to see the presentation hosted on Google Slides.
 
 <br>
 
 ## **Workflow**
 
-<br>
-
 ### Project Outline
+From a high level overview, static (e.g. downloaded) and live (e.g. scraping) data is being taken using python to then be fed to machine learning models to generate price predictions and evaluate sentiment polarity. All this pulled data and machine learning output is then connected and uploaded to a MongoDb database where it sits until the webpage needs it. Below are four figures increasing in specificity that outline how the project functions.
 
 
 <p align="center">
@@ -59,6 +67,13 @@ Link to Google Slides: click [here](https://docs.google.com/presentation/d/10gvL
     Figure 3 (Data Analysis Breakdown)
 </p>
 
+<br>
+
+<p align="center">
+    <img src="Resources/images/Rough_File_Structure.PNG"><br>
+    Figure 4 (Rough File Structure)
+</p>
+
 ### Communication Protocols
 
 Tools: 
@@ -71,15 +86,6 @@ Protocols:
 - Bi-weekly meetup for project progress check-up. Scheduled during class time.
 - Assistance outside of meeting times is directed through IM on Slack. Further assistance may be requested through a Zoom meeting as needed.
 - Main branch merges require review by other team members. The reviews may be conducted through Slack IM, Github review process, or on a Zoom meeting. 
-
-## Scraping Twitter
-Twitter is an American social networking service where individuals can microblog in a form of "Tweet". There are many limitations of accessing Twitter. Twitter's API allows access to recent data up to a week old and retrieve 500,000 Tweets per month. We will be scraping all Tweets that include the words: "gas" and "oil".
-
-#### The Process
-To scrape the data from Twitter, we created a Twitter account and applied to access the API. Once we got accepted, we used the API key to connect to Twitter. We were able to collect the number of Tweets and all Tweets that included the words: "gas" and "oil" from the past seven days.
-
-#### Limitations
-In order to grab data longer than seven days from Twitter, we scraped new Tweets every day and added it to the previous combined data (`tweets.csv` and `tweet_count.csv`).
 
 
 ## Machine Learning
@@ -109,13 +115,37 @@ The data are split into 80% training and 20% testing.
 
 ## Data Analysis
 
-<br>
+### Scraping Twitter
+Twitter is an American social networking service where individuals can microblog in a form of "Tweet". There are many limitations of accessing Twitter. Twitter's API allows access to recent data up to a week old and retrieve 500,000 Tweets per month. We will be scraping all Tweets that include the words: "gas" and "oil".
+
+#### The Process
+To scrape the data from Twitter, we created a Twitter account and applied to access the API. Once we got accepted, we used the API key to connect to Twitter. We were able to collect the number of Tweets and all Tweets that included the words: "gas" and "oil" from the past seven days.
+
+#### Limitations
+In order to grab data longer than seven days from Twitter, we scraped new Tweets every day and added it to the previous combined data (`tweets.csv` and `tweet_count.csv`).
 
 ## Database
 
 <br>
 
 ## Dashboard
+Two web pages will be created to host the data visualizations. Therefore, a web stack will be utilized to build the web pages. A connection will be made to the MongoDB database which will pass data to a javascript file. After the javascript file has handled the data (e.g. create line graph) the data/visualizations will finally be passed to the html webpage for display.
 
-<br>
+### Tools & Uses
+- HTML5 - Page layout.
+- CSS3 - Page styling.
+- Plotly.js - Fuel price line graph & sentiment graphic.
+- Node.js - Database connection.
+- JavaScript - Handle dynamic content (e.g. click events).
+
+### Interactive Elements
+- Navigation Bar- clickable links allowing navigation between the About page and the Home page.
+- Date Filter- clickable graph filter allowing user to select date range between 1 month, 3 months, 6 months, or 1 year.
+- Twitter Post - clickable links directing the user to the original twitter post on Twitter.
+- User Info - clickable link redirecting the user to the respective collaborator’s github page.
+
+<p align="center">
+    <img src="Resources/images/Storyboard.PNG"><br>
+    Figure 5 (Storyboard)
+</p>
 
