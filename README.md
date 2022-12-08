@@ -41,21 +41,21 @@ Link to Google Slides: click [here](https://docs.google.com/presentation/d/10gvL
 
 
 <p align="center">
-    <img src="Resources/Images/HighLevel_Overview.PNG"><br>
+    <img src="Resources/images/HighLevel_Overview.PNG"><br>
     Figure 1 (High Level Overview)
 </p>
 
 <br>
 
 <p align="center">
-    <img src="Resources/Images/Data_Flow.PNG"><br>
+    <img src="Resources/images/Data_Flow.PNG"><br>
     Figure 2 (Data Flow)
 </p>
 
 <br>
 
 <p align="center">
-    <img src="Resources/Images/Data_Analysis.PNG"><br>
+    <img src="Resources/images/Data_Analysis.PNG"><br>
     Figure 3 (Data Analysis Breakdown)
 </p>
 
