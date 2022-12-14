@@ -34,6 +34,9 @@ Having said that, the deliverables can be found in the following files:
 
 ### Future Work
 The next step is to integrate all our modules together and build out the webpage.
+#### Future Work for Machine Learning Models
+The next step for the linear regression machine learning model is to include a function that takes in current gas prices from AAA's website and predicts future gas prices. The next step for the sentiment analysis natural language processing model is to fix the "for loop" issue and generate predictions and an accuracy score. Currently, the models are merged into one python file, and will be updated once the next steps are complete.
+
 
 <br>
 
@@ -106,6 +109,19 @@ This linear regression model is the best model because historically, crude oil p
 #### Train, Test, Split Description 
 The data are split into 80% training and 20% testing.
 
+#### Explanation of Changes in Model Choice 
+Not applicable.
+
+#### Description of How the Model Has Been Trained Thus Far and Any Additional Training
+This model will also include a function that takes in current gas prices (into the existing linear regression model with past gas prices) and predicts future gas prices.
+
+#### Description of Current Accuracy Score
+The current accuracy socre is 0.873. This will fluctuate once the function that takes in current gas prices to predict future gas prices is added.
+
+#### How the Model Addresses the Question/Problem the Team is Solving 
+This linear regression model will predict future gas prices in order to help American customers make more informed decisions about their gas consumption.
+
+
 ### Natural Language Processsing (Sentiment Analysis) (see twitter_NLP.ipynb)
 
 #### Description of Preliminary Data Preprocessing
@@ -119,6 +135,18 @@ This sentiment analysis NLP model is useful to understand consumers' feedback an
 
 #### Train, Test, Split Description 
 The data are split into 80% training and 20% testing.
+
+#### Explanation of Changes in Model Choice 
+Based on the timeline of the project, a BERT model is unlikely to be implemented, even though it is a better NLP model.
+
+#### Description of How the Model Has Been Trained Thus Far and Any Additional Training
+The model is not running yet due to issues with a "for loop". Once the model is running, it will be trained to predict polarity scores, or emotions expressed, of tweets about gas prices.
+
+#### Description of Current Accuracy Score
+Not yet applicable.
+
+#### How the Model Addresses the Question/Problem the Team is Solving 
+This sentiment analysis natural language processing model will compliment the linear regression model by showcasing general sentiment about gas prices from tweets.
 
 <br>
 
