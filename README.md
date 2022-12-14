@@ -34,7 +34,7 @@ Having said that, the deliverables can be found in the following files:
 
 ### Future Work
 The next step is to integrate all our modules together and build out the webpage.
-#### Future Work for Machine Learning Models
+#### Future Work for Machine Learning Models - 12/14/2022
 The next step for the linear regression machine learning model is to include a function that takes in current gas prices from AAA's website and predicts future gas prices. The next step for the sentiment analysis natural language processing model is to fix the "for loop" issue and generate predictions and an accuracy score. Currently, the models are merged into one python file, and will be updated once the next steps are complete.
 
 
@@ -92,7 +92,7 @@ Protocols:
 
 <br>
 
-## Machine Learning
+## Machine Learning (see gas_oil_LR_twitter_NLP.py)
 
 ### Linear Regression (see gas_oil_ML.ipynb)
 
