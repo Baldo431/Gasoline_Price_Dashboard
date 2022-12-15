@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gasoline Price Predictor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- Side Navigation -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-center" style="display:none" id="mySidebar">
+        <a href="index.html" class="w3-bar-item w3-button">Home</a>
+        <a href="about.html" class="w3-bar-item w3-button">About</a>
+        <a href="presentation.html" class="w3-bar-item w3-button">Presentation</a>
+        <button class="w3-bar-item w3-button" id="closeNav">Close <i class="fa fa-remove"></i></button>
+    </nav>
+
+    <!-- Header -->
+    <header class="w3-container w3-theme w3-padding" id="myHeader">
+        <i class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
+        <div class="w3-center">
+            <h4></h4>
+            <h1 class="w3-xxxlarge w3-animate-bottom">Gasoline Price Predictor</h1>
+            <div class="w3-padding-32"></div>
+        </div>
+    </header>
+
+    <!-- Line Chart -->
+    <div class="w3-row w3-center w3-margin">
+        <div class="w3-col w3-container w3-border">
+            <div id="lineChart01"></div>               
+        </div>
+    </div>
+
+    <!-- Prices Table -->
+    <div class="w3-container">
+        <hr>
+        <div class="w3-center">
+          <h2>National Average Gas Prices</h2>
+        </div>
+    </div>
+
+    <div class="w3-responsive w3-card-4 w3-margin">
+        <table class="w3-table w3-striped w3-bordered">
+        <thead>
+        <tr class="w3-theme">
+          <th></th>
+          <th>Regular</th>
+          <th>Mid-Grade</th>
+          <th>Premium</th>
+          <th>Diesel</th>
+          <th>E85</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="w3-padding-32"></div>  
+
+    <!-- Sentiment Graph -->
+    <div class="w3-container">
+        <hr>
+        <div class="w3-center">
+          <h2>Public Sentiment Analysis*</h2>
+        </div>
+    </div>
+    <div class="w3-row w3-center w3-margin">
+        <div class="w3-col w3-container w3-border">
+            <div id="barChart01"></div>           
+        </div>
+    </div>
+    
+    <div class="w3-padding-32"></div>  
+    
+    <!-- Twitter Posts-->
+    <div class="w3-row-padding w3-center w3-margin-top">
+        <div class="w3-third">
+          <div class="w3-card w3-container" style="height:720px">
+                <h3>Positive Twitter Posts</h3><br><br>
+                <div class="w3-container w3-center tweetScroller" id="posTweet">
+                    <p>Built-in responsiveness</p>
+                    <p>Mobile first fluid grid</p>
+                    <p>Fits any screen sizes</p>
+                    <p>PC Tablet and Mobile</p>
+                </div>
+          </div>
+        </div>
+
+        <div class="w3-third">
+            <div class="w3-card w3-container" style="height:720px">
+                  <h3>Neutral Twitter Posts</h3><br><br>
+                  <div class="w3-container w3-center tweetScroller" id="neutTweet">
+                      <p>Built-in responsiveness</p>
+                      <p>Mobile first fluid grid</p>
+                      <p>Fits any screen sizes</p>
+                      <p>PC Tablet and Mobile</p>
+                  </div>
+            </div>
+        </div>
+
+
+        <div class="w3-third">
+            <div class="w3-card w3-container" style="height:720px">
+                    <h3>Negative Twitter Posts</h3><br><br>
+                    <div class="w3-container w3-center tweetScroller" id="negTweet">
+                        <p>Built-in responsiveness</p>
+                        <p>Mobile first fluid grid</p>
+                        <p>Fits any screen sizes</p>
+                        <p>PC Tablet and Mobile</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-padding-32"></div> 
+
+    <footer class="w3-container w3-padding-32 w3-theme-d1 w3-center">
+        <h4>Follow Us</h4>
+        <a class="w3-button w3-large w3-teal" href="javascript:void(0)" title="Facebook"><i class="fa fa-facebook"></i></a>
+        <a class="w3-button w3-large w3-teal" href="javascript:void(0)" title="Twitter"><i class="fa fa-twitter"></i></a>
+        <a class="w3-button w3-large w3-teal" href="javascript:void(0)" title="Google +"><i class="fa fa-google-plus"></i></a>
+        <a class="w3-button w3-large w3-teal" href="javascript:void(0)" title="Google +"><i class="fa fa-instagram"></i></a>
+        <a class="w3-button w3-large w3-teal w3-hide-small" href="javascript:void(0)" title="Linkedin"><i class="fa fa-linkedin"></i></a>
+        <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+      
+        <div style="position:relative;bottom:100px;z-index:1;" class="w3-tooltip w3-right">
+          <span class="w3-text w3-padding w3-teal w3-hide-small">Go To Top</span>   
+          <a class="w3-button w3-theme" href="#myPage"><span class="w3-xlarge">
+          <i class="fa fa-chevron-circle-up"></i></span></a>
+        </div>
+    </footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

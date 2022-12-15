@@ -1,0 +1,5 @@
+.tweetScroller{
+    height: 560px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
