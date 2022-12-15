@@ -16,24 +16,18 @@ The goal is to create a dashboard hosted on a webpage that will provides users w
 - Natural Language Processing: Sentiment Analysis
 
 ### Current Status
-12/7/2022 - This week the deliverables for Segment 2 were submitted. So far, the machine learning portions and data ETL have been completed, but lack integration with one another. Additionally, not all data has been programatically added to the database.
+12/14/2022 - This week the deliverables for Segment 3 were submitted. The biggest progress this week was the creation of the web pages and connecting them to the database. We were able to successfully retrieve information from mongoDB using node.js and express.js. However, we ran into issues incorporating the machine learning predictions into the web page as the module that inserts the machine learngin data into the database has not been completed yet. Additionally, the connection to the database posed an unprecedented challenge as Node.js and Express.js was new technology that had to be learned and led to some of the data not being added to the web page on time. See Figure 6 in the [Dashboard](#dashboard) section below to see what the current home page looks like.
 
 Some things to note are that:
-- No join statement was performed as the data used in this project does not require joins and is stored in a noSQL database.
-- The `twitter_data.py` file has not been integrated into the main logic. Therefore, its ouput is not currently being entered into the database.
-- The machine learning models have not been converted and consolidated into one python file and are still in ipynb format.
-- Some issues were encountered when merging, causing some of the file references to be incorrect. 
-- `logic.py` and `scraping.py` should work and showcase the connection to the database. Just note that these files require a local connection to a mongodb instance to insert data into the database.
-
-Having said that, the deliverables can be found in the following files:
-- Presentation : clickable link in Readme.md
-- Machine Learning Model: see `gas_oil_ML.ipynb` and `twitter_NLP.ipynb`
-- Database: see `logic.py` and `scraping.py`
-- Dashboard: see Dashboard section in Readme.md or Storyboard slide on presentation.
+- The web page is hosted locally. To run it on localhost it requires installation of node.js, express.js, and the mongodb driver.
+- The twitter data has not been added to the home web page.
+- Dummy data was used in stead of the twitter data and current gas prices prediction.
+- The web page back end can be found in the `app.js` file and the front end components can be found under the `public` folder.
+- The only interactive elements at the moment are the nave bar and the built in interactions from the Plotly.js charts.
 
 
 ### Future Work
-The next step is to integrate all our modules together and build out the webpage.
+The next step is to complete building the other web pages and integrate all the data in the database into the home page.
 #### Future Work for Machine Learning Models - 12/14/2022
 The next step for the linear regression machine learning model is to include a function that takes in current gas prices from AAA's website and predicts future gas prices. The next step for the sentiment analysis natural language processing model is to fix the "for loop" issue and generate predictions and an accuracy score. Currently, the models are merged into one python file, and will be updated once the next steps are complete.
 
@@ -76,19 +70,6 @@ From a high level overview, static (e.g. downloaded) and live (e.g. scraping) da
     <img src="Resources/images/Rough_File_Structure.PNG"><br>
     Figure 4 (Rough File Structure)
 </p>
-
-### Communication Protocols
-
-Tools: 
-- Slack for instant messaging (IM).
-- Zoom for audio and video communication.
-- Google Drive and its ecosystem for document collaboration outside of Github.
-- Github for code managment.
-
-Protocols:
-- Bi-weekly meetup for project progress check-up. Scheduled during class time.
-- Assistance outside of meeting times is directed through IM on Slack. Further assistance may be requested through a Zoom meeting as needed.
-- Main branch merges require review by other team members. The reviews may be conducted through Slack IM, Github review process, or on a Zoom meeting. 
 
 <br>
 
@@ -175,23 +156,36 @@ We were able to access the historic gas and diesel prices from Statistica. From 
 <br>
 
 ## Dashboard
-Two web pages will be created to host the data visualizations. Therefore, a web stack will be utilized to build the web pages. A connection will be made to the MongoDB database which will pass data to a javascript file. After the javascript file has handled the data (e.g. create line graph) the data/visualizations will finally be passed to the html webpage for display.
+Four web pages were created with the following purposes.
+
+- `index.html` : hosts all the data visualizations. 
+- `about.html` : provides information about the project.
+- `presentation.html` :  hosts an embeded version of the google slides presenation used for this project.
+- `404.html` : web page that is returned when an unexpected route is passed to the backend.
+
 
 ### Tools & Uses
 - HTML5 - Page layout.
 - CSS3 - Page styling.
 - Plotly.js - Fuel price line graph & sentiment graphic.
 - Node.js - Database connection.
+- Express.js - Middleware between front end and backend.
 - JavaScript - Handle dynamic content (e.g. click events).
 
 ### Interactive Elements
 - Navigation Bar- clickable links allowing navigation between the About page and the Home page.
-- Date Filter- clickable graph filter allowing user to select date range between 1 month, 3 months, 6 months, or 1 year.
 - Twitter Post - clickable links directing the user to the original twitter post on Twitter.
 - User Info - clickable link redirecting the user to the respective collaborator’s github page.
 
 <p align="center">
     <img src="Resources/images/Storyboard.PNG"><br>
     Figure 5 (Storyboard)
+</p>
+
+<br>
+
+<p align="center">
+    <img src="Resources/images/Home_Page.PNG"><br>
+    Figure 6 (Home Page)
 </p>
 
