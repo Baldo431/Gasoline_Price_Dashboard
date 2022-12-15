@@ -23,7 +23,7 @@ Some things to note are that:
 - The twitter data has not been added to the home web page.
 - Dummy data was used in stead of the twitter data and current gas prices prediction.
 - The web page back end can be found in the `app.js` file and the front end components can be found under the `public` folder.
-- The only interactive elements at the moment are the nave bar and the built in interactions from the Plotly.js charts.
+- The only interactive elements at the moment are the navigation bar and the built in interactions from the Plotly.js charts.
 
 
 ### Future Work
@@ -185,7 +185,7 @@ Four web pages were created with the following purposes.
 <br>
 
 <p align="center">
-    <img src="Resources/images/Home_Page.PNG"><br>
+    <img src="Resources/images/Home_Page.png"><br>
     Figure 6 (Home Page)
 </p>
 
