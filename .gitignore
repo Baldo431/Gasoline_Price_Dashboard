@@ -1,6 +1,12 @@
 # Adding config.py file.
 config.py
 
+# Adding jupyter notebook checkpoints and node js files
+.ipynb_checkpoints
+node_modules/
+package.json
+package-lock.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
