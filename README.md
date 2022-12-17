@@ -131,8 +131,6 @@ This sentiment analysis natural language processing model will compliment the li
 
 <br>
 
-## Data Analysis
-
 ### The Data
 We will be collecting data from multiple locations:
 
