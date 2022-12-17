@@ -2,7 +2,6 @@
 import os
 import numpy as np
 import pandas as pd
-import spacy
 import re
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
@@ -17,8 +16,7 @@ os.listdir(os.curdir)
 # Below the data are loaded into two dataframes (gas_df and crude_df). The cleaned gas price dataframe includes all formulations of retail gasoline and diesel prices in a MM/DD/YYYY format with samples from each month starting in January 1995 to January 2021. The cleaned crude oil dataframe is in the same format as the cleaned gas price dataframe: MM/DD/YYYY format with monthly samples from January 1995 to January 2021.
 ## Data Examining & Cleaning 
 
-gas_df = pd.read_csv("PET_PRI_GND_DCUS_NUS_W.csv")
-gas_df.head()
+hist_gas_df = pd.read_csv("PET_PRI_GND_DCUS_NUS_W.csv")
 
 #A1: Weekly U.S. All Grades All Formulations Retail Gasoline Prices (Dollars per Gallon)
 #A2: Weekly U.S. All Grades Conventional Retail Gasoline Prices (Dollars per Gallon)
@@ -34,19 +32,16 @@ gas_df.head()
 #P3: Weekly U.S. Premium Reformulated Retail Gasoline Prices (Dollars per Gallon)
 #D1: Weekly U.S. No 2 Diesel Retail Prices (Dollars per Gallon)
 
-# Dropping conventional and reformulated retail gas prices
-gas_df['date'] = gas_df['Date']
-gas_df = gas_df[['date', 'A1', 'R1', 'M1', 'P1', 'D1']]
-gas_df.head(10)
+# Dropping conventional and reformulated retail gas prices as well as all, mid-grade, and premium
+hist_gas_df['date'] = hist_gas_df['Date']
+hist_gas_df = hist_gas_df[['date', 'R1', 'D1']]
 
 crude_df = pd.read_csv("crude-oil-price.csv")
-crude_df.head()
 
 # Dropping percent change and change of crude oil prices
 crude_df = crude_df[['date', 'price']]
-crude_df.head()
 
-# Formatting crude_df to match gas_df date format
+# Formatting crude_df to match hist_gas_df date format
 from datetime import date
 def fix_date(bad_date):
     bad_date = str(bad_date)
@@ -55,12 +50,10 @@ def fix_date(bad_date):
     return date(int(year), int(month), int(day))
 
 crude_df['date'] = crude_df['date'].apply(fix_date) 
-crude_df.head()
 
 # Dropping 1983-1994 from crude_df
 cuttoff_date = date(1994, 12, 31)
 crude_df = crude_df.loc[crude_df['date'] > cuttoff_date]
-crude_df.head(10)
 
 # Lining up months and years in crude_df and gas_df
 def date2str(dt):
@@ -71,33 +64,51 @@ def drop_month(dt):
     return f"{month}/{year}"
 
 crude_df['date'] = crude_df['date'].apply(date2str)
-gas_df['date'] = gas_df['date'].apply(drop_month)
-
-# Price per barrel 
-crude_df.head()
-
-crude_df.tail(25)
+hist_gas_df['date'] = gas_df['date'].apply(drop_month)
 
 # Omit 2022 data 
 crude_df = crude_df.loc[0:454]
-crude_df.tail(10)
-
-# Price per gallon 
-gas_df.head()
-
-gas_df.tail(15)
 
 # Keep only first Month/Year instance for gas_df
 seen_dates = set()
 indices_to_remove = []
-for idx, row in gas_df.iterrows():
+for idx, row in hist_gas_df.iterrows():
     _date = row['date']
     if _date in seen_dates:
         indices_to_remove.append(idx)
     else:
         seen_dates.add(_date)
-gas_df.drop(indices_to_remove, inplace=True)
-gas_df.head()
+hist_gas_df.drop(indices_to_remove, inplace=True)
+
+# Current Gas Prices DF Data Cleaning
+current_gas_df = pd.read_csv("gas-diesel-prices.csv")
+
+
+# Lining up months and years in current_gas_df to match crude_df and hist_gas_df
+def date2str(dt):
+    return dt.strftime('%m/%Y')
+
+def drop_month(dt):
+    year, month, day = dt.split('-')
+    return f"{month}/{year}"
+current_gas_df['date'] = current_gas_df['Date'].apply(drop_month)
+
+# Keep only first Month/Year instance for current_gas_df
+seen_dates = set()
+indices_to_remove = []
+for idx, row in current_gas_df.iterrows():
+    _date = row['date']
+    if _date in seen_dates:
+        indices_to_remove.append(idx)
+    else:
+        seen_dates.add(_date)
+current_gas_df.drop(indices_to_remove, inplace=True)
+
+current_gas_df = current_gas_df[['date', 'Regular', 'Diesel']]
+
+# Appending hist_gas_df and current_gas_df
+gas_df = hist_gas_df.append(current_gas_df)
+
 
 # Linear Regression Machine Learning Model
 
@@ -111,8 +122,8 @@ gas_df.head()
 # Y = gas price [=] 1/gallon
 import numpy as np
 
-X = np.array(crude_df['price'].values.tolist())
-y = np.array(gas_df[['A1', 'R1', 'M1', 'P1', 'D1']].values.tolist())
+X = np.array(crude_df['price'])
+Y = gas_df['Regular'].to_numpy()
 
 ## Train, Test, Split Description 
 # The data are split into 80% training and 20% testing.
@@ -146,160 +157,112 @@ fig.show()
 # R-squared (how much of the outcome is predicted correctly by the model) with test data
 r_2_test
 
+# Visualizations
+# Training Data Vis
+plt.scatter(X_train, Y_train, color = "mediumvioletred")
+plt.plot(X_train, lin_reg_model.predict(X_train), color = "cornflowerblue")
+plt.title("Model Prediction from Training Data")
+plt.xlabel("Historical Crude Oil (USD/Barrel)")
+plt.ylabel("Model Predicted Regular Gas (USD/Gallon)")
+plt.text(20, 4.0, f"r^2 = {r_2_train:.3f}")
+plt.savefig("training_fig.png")
+# Test Data Vis
+plt.scatter(X_test, Y_test, color = "forestgreen")
+plt.plot(X_test, lin_reg_model.predict(X_test), color = "coral")
+plt.title("Model Prediction from Testing Data")
+plt.xlabel("Historical Crude Oil (USD/Barrel)")
+plt.ylabel("Model Predicted Regular Gas (USD/Gallon)")
+plt.text(22, 3.2, f"r^2 = {r_2_test:.3f}")
+plt.savefig("testing_fig.png")
+
 
 # Twitter Sentiment Analysis (Natural Language Processing) Model 
 import os
-
-import pandas as pd
-
-import numpy as np 
-from pathlib import Path
-from collections import Counter
-
-from tqdm import tqdm
-import json
-import pandas as pd
-
 import re
-
+import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
-
-import spacy
-nlp = spacy.load('en_core_web_sm')
-
-from spacytextblob.spacytextblob import SpacyTextBlob
-nlp.add_pipe('spacytextblob')
-
-from string import punctuation as PUNCTUATION
-from spacy.lang.en.stop_words import STOP_WORDS
-
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import balanced_accuracy_score
-from sklearn.metrics import confusion_matrix
+from textblob import TextBlob
 
 # Changing Directory
 os.chdir('/Users/annettedblackburn/Desktop/Data_Analytics_Bootcamp/Module 20 - Final (Group) Project')
 
 os.listdir(os.curdir)
 
+### Description of Preliminary Data Preprocessing
+#Using tweets from November 24, 2022 to December 5, 2022, the data are cleaned and subjectivity and polarity score columns are included.
+
+### Description of Preliminary Feature Engineering and Preliminary Feature Selection
+#To use natural language processing to characterize the sentiment of current tweets on gas prices (positive, neutral, or negative sentiment, ranging from -1.0 to 1.0).
+
 twitter_df = pd.read_csv('tweets_clean.csv')
-twitter_df
-
-switchbag = twitter_df.values.reshape(43043, 1)
-twitter_df = pd.DataFrame(switchbag)
-twitter_df
-
-twitter_df = pd.read_csv('tweets_clean.csv')
-polarity_scores = []
-subjectivity_scores = []
-tweets = []
-
-with open('tweets_clean.csv', 'r') as f:
-    for line in tqdm(f, total=10000):
-        tweet_dict = line.split(",")
-        tweets = twitter_df
-        tweets_doc = nlp(tweet_dict)
-        polarity_scores.append(tweets._.blob.polarity)
-        subjectivity_scores.append(tweets._.blob.subjectivity)
-        tweets.append(tweets)
-
-twitter_df['polarity_score'] = polarity_scores
-twitter_df['subjectivity_score'] = subjectivity_scores
-twitter_df['tweets'] = tweets
-
-twitter_df.tail()
-# current twitter_df format: 3310, 13 (rows, columns)
-# new twitter_df format: 43043, 1 (rows, columns)
 
 switchbag = twitter_df.values.reshape(43043, 1)
 twitter_df = pd.DataFrame(switchbag)
 
-twitter_df.head()
+# Adding column name to twitter_df
+twitter_df.columns = ['Tweet', 'sentiment']
 
-# Adding column name to tweets
-twitter_df = twitter_df.rename(columns = {'0':'Tweets'})
-twitter_df.head()
+# Example with actual tweet
+example = TextBlob("rtr: U.S. seeks to limit flaring and methane leaks from public lands drilling - President Joe Biden's administration on Monday proposed rules aimed at limiting methane leaks from oil and gas drilling on public lands. By @ValerieVolco @nicholagroom https://t.co/Pi6vCf6RyC")
 
-twitter_df = pd.DataFrame(columns=['polarity_score', 'subjectivity_score'])
-twitter_df
+for Tweet in twitter_df.columns:
+    a = TextBlob(Tweet)
+    twitter_df['sentiment'] = a.sentiment.polarity
 
-# Adding columns 
-polarity_scores = []
-subjectivity_scores = []
-tweets = []
+# Returning sentiment score of inputted tweet 
+def get_sentimental(target):
+    return TextBlob(target).sentiment.polarity
 
-for tweet in tweets:
-    doc = nlp(tweet)
-    for token in doc:
-        print
+# Converting all data to strings 
+def any2str(target):
+    if type(target) is not str:
+        return str(target)
+    else:
+        return target
 
-with open('tweets_clean.csv', 'r') as f:
-    for line in tqdm(f, total=10000):
-        #tweet_dict, tweets, tweets_doc = 
-       #tweet_dict = json.loads(line)
-        tweets = tweet_dict['text']
-        tweets_doc = nlp(tweets)
-        # 4. polarity score for each tweet (emotions expressed)
-        polarity_scores.append(tweets_doc._.blob.polarity)
-        # 5. subjectivity score for each tweet (personal feelings, views, beliefs expressed in the tweet)
-        subjectivity_scores.append(tweets_doc._.blob.subjectivity)
-        tweets.append(tweets)
+twitter_df['Tweet'] = twitter_df['Tweet'].apply(any2str)
+twitter_df['sentiment'] = twitter_df['Tweet'].apply(get_sentimental)
 
-twitter_df['polarity_score'] = polarity_scores
-twitter_df['subjectivity_score'] = subjectivity_scores
-twitter_df['tweets'] = tweets
+# Visualizations 
+import matplotlib.pyplot as plt
+import math 
+import numpy as np
+import scipy.stats as stats
 
-twitter_df.head()
+def norm(x_min, x_max, avg, stdev):
+    x = np.arange(x_min, x_max, 0.01)
+    coeff = 1/(stdev*math.sqrt(2*math.pi))
+    expo = -0.5*(((x - avg)/ stdev)**2) 
+    return x, coeff*math.e**expo 
 
-# Drop NAs
-twitter_df.dropna()
+# Data Vis of Sentiments
+sents = twitter_df['sentiment'].to_numpy()
 
-## Using spacy's English language model, individual tweets are tokenized and the following are collected:
-#1. total number of words
-#2. total number of punctuation marks
-#3. total number of words that are not stop words
-#4. polarity score (emotions expressed in the tweet)
-#5. subjectivity score (personal feelings, views, or beliefs expressed in the tweet)
+mu = twitter_df['sentiment'].mean()
+variance = twitter_df['sentiment'].var()
+sigma = twitter_df['sentiment'].std()
+bell_x, bell = norm(twitter_df['sentiment'].min(), twitter_df['sentiment'].max(), mu, sigma)
+#x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
 
-# 1. total number of words
-def count_words(text):
-    words = text.split()
-    return len(words)
+plt.hist(sents, color = "deeppink")
+plt.plot(bell_x, bell*(0.55*25000))
+plt.title("Sentiment Analysis Histogram")
+plt.xlabel("Sentiments of Gas Price Tweets (-1.0 to 1.0)")
+plt.ylabel("Count")
 
-twitter_df['word_count'] = twitter_df["review"].apply(count_words)
-twitter_df.head()
+plt.savefig("sentiment_hist.png")
 
-# 2. total number of punctuation marks for each tweet
-def count_punct_marks(text):
-    char_count = 0
-    for cha in text:
-        if cha in PUNCTUATION:
-            char_count+=1
-    return char_count
+### Explanation of Model Choice, including Limitations and Benefits
+#This sentiment analysis NLP model provides a sentiment score for those who tweeted about gas and oil from November 24, 2022 to December 5, 2022. To understand the sentiment of current consumers, current data would need to be added. To include this sentiment analysis in the linear regression machine learning model, we would need more data, organized by month. Due to the limitations of the data and the data preprocessing of the linear regression model, there are only gas and diesel prices by month from January 1995 to January 2021 and February 2022 to December 2022. As a result, adding this sentiment analysis to the other model would only be adding two data points: November and December 2022 tweets.
 
-twitter_df['punct_count'] = twitter_df["review"].apply(count_punct_marks)
-twitter_df.head()
+### Train, Test, Split Description
+#Since the tweet data are limited to November and December, they cannot be meaningfully added to the linear regression model, so there is no training set or testing set.
 
-# 3. total number of words that are not stop words for each tweet
-def count_non_stop_words(text):
-    non_stop_words = pd.Series(text.split())
-    non_stop_words.str.strip(PUNCTUATION)
+### Explanation of Changes in Model Choice & Description of How the Model Has Been Trained Thus Far and Any Additional Training
+#Based on the formatting of the tweets and gas prices, the model went from attempting to predict current sentiment of gas prices to characterizing the sentiment from the last week in November to the first week in December.
 
-    drop_list = []
-    
-    for idx, word in enumerate(non_stop_words):
-        if word in STOP_WORDS:
-            drop_list.append(idx)
-    non_stop_words.drop(index=drop_list, inplace=True)
-    return len(non_stop_words)
+### Description of Current Accuracy Score
+#Not applicable.
 
-
-twitter_df['non_stop_words'] = twitter_df["review"].apply(count_non_stop_words)
-twitter_df.head()
-
-## Description of Preliminary Data Preprocessing
-## Data Examining & Cleaning 
-# Sentiment Analysis Natural Language Processing Machine Learning Model
-## Description of Preliminary Feature Engineering and Preliminary Feature Selection
-# Explanation of Model Choice, including Limitations and Benefits 
+### How the Model Addresses the Question/Problem the Team is Solving
+#This sentiment analysis natural language processing model will compliment the linear regression model by showcasing general sentiment about current gas prices from tweets.
