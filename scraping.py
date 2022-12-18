@@ -67,13 +67,19 @@ def current_pricing(browser):
 
 def historical_pricing():
     # Import static csv data into dataframe
-    crude_hist_df = pd.read_csv('./Resources/crude_price_history.csv')
-    gas_hist_df = pd.read_csv('./Resources/gas_price_history.csv', header=2)
+    crude_hist_df = pd.read_csv('./Resources/data/crude_price_history.csv')
+    gas_hist_df = pd.read_csv('./Resources/data/gas_price_history.csv', header=2)
 
     # Clean gas dataframe
     gas_hist_df['Date'] = pd.to_datetime(gas_hist_df['Date'])
     gas_hist_df['Date'].dropna()
-    gas_hist_df.drop(['Unnamed: 16', 'Weekly U.S. No 2 Diesel Low Sulfur (15-500 ppm) Retail Prices  (Dollars per Gallon)'], axis=1, inplace=True)
+    gas_hist_df.rename(columns={
+    gas_hist_df.columns[4]:"Weekly US Regular Price",
+    gas_hist_df.columns[7]:"Weekly US Midgrade Price",
+    gas_hist_df.columns[10]:"Weekly US Premium Price",
+    gas_hist_df.columns[13]:"Weekly US No2 Diesel Price"}, 
+    inplace=True)
+    gas_hist_df = gas_hist_df[["Date","Weekly US Regular Price","Weekly US Midgrade Price","Weekly US Premium Price", "Weekly US No2 Diesel Price"]]
 
     # Filter gas dataframe to only include data from last year.
     now = datetime.now()
