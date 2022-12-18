@@ -75,6 +75,8 @@ From a high level overview, static (e.g. downloaded) and live (e.g. scraping) da
 
 ## Machine Learning (see gas_oil_LR_twitter_NLP.py)
 
+<br>
+
 ### Linear Regression (see gas_oil_ML.ipynb)
 
 #### Description of Preliminary Data Preprocessing
@@ -94,44 +96,42 @@ The data are split into 80% training and 20% testing.
 Not applicable.
 
 #### Description of How the Model Has Been Trained Thus Far and Any Additional Training
-This model will also include a function that takes in current gas prices (into the existing linear regression model with past gas prices) and predicts future gas prices.
+After adding AAA current gas price data and data cleaning, this model now includes a function that takes in current gas prices (into the existing linear regression model with past gas prices) and predicts future gas prices.
 
 #### Description of Current Accuracy Score
-The current accuracy socre is 0.873. This will fluctuate once the function that takes in current gas prices to predict future gas prices is added.
+The current accuracy score is 0.903 with the new fucntion, which is an improvement from the previous accuracy score (0.873).
 
 #### How the Model Addresses the Question/Problem the Team is Solving 
 This linear regression model will predict future gas prices in order to help American customers make more informed decisions about their gas consumption.
 
+<br>
 
 ### Natural Language Processsing (Sentiment Analysis) (see twitter_NLP.ipynb)
 
 #### Description of Preliminary Data Preprocessing
-Using tweets from November 2022 to present, the data are cleaned and subjectivity and polarity score columns are included.
+Using tweets from November 24, 2022 to December 5, 2022, the data are cleaned and subjectivity and polarity score columns are included.
 
 #### Description of Preliminary Feature Engineering and Preliminary Feature Selection
-To use natural language processing to characterize the sentiment of current tweets on gas prices (positive, neutral, or negative sentiment).
+To use natural language processing to characterize the sentiment of current tweets on gas prices (positive, neutral, or negative sentiment, ranging from -1.0 to 1.0).
 
-#### Explanation of Model Choice, including Limitations and Benefits 
-This sentiment analysis NLP model is useful to understand consumers' feedback and their needs. A, perhaps, better NLP model would be a BERT model. A BERT model has two tasks: language modeling and next sentence prediction, which is better for the context of tweets, rather than a simple positive, neutral, or negative sentiment.
+### Explanation of Model Choice, including Limitations and Benefits
+This sentiment analysis NLP model provides a sentiment score for those who tweeted about gas and oil from November 24, 2022 to December 5, 2022. To understand the sentiment of current consumers, current data would need to be added. To include this sentiment analysis in the linear regression machine learning model, we would need more data, organized by month. Due to the limitations of the data and the data preprocessing of the linear regression model, there are only gas and diesel prices by month from January 1995 to January 2021 and February 2022 to December 2022. As a result, adding this sentiment analysis to the other model would only be adding two data points: November and December 2022 tweets.
 
-#### Train, Test, Split Description 
-The data are split into 80% training and 20% testing.
+### Train, Test, Split Description
+Since the tweet data are limited to November and December, they cannot be meaningfully added to the linear regression model, so there is no training set or testing set.
 
-#### Explanation of Changes in Model Choice 
-Based on the timeline of the project, a BERT model is unlikely to be implemented, even though it is a better NLP model.
+### Explanation of Changes in Model Choice & Description of How the Model Has Been Trained Thus Far and Any Additional Training
+Based on the formatting of the tweets and gas prices, the model went from attempting to predict current sentiment of gas prices to characterizing the sentiment from the last week in November to the first week in December.
 
-#### Description of How the Model Has Been Trained Thus Far and Any Additional Training
-The model is not running yet due to issues with a "for loop". Once the model is running, it will be trained to predict polarity scores, or emotions expressed, of tweets about gas prices.
+### Description of Current Accuracy Score
+Not applicable.
 
-#### Description of Current Accuracy Score
-Not yet applicable.
-
-#### How the Model Addresses the Question/Problem the Team is Solving 
-This sentiment analysis natural language processing model will compliment the linear regression model by showcasing general sentiment about gas prices from tweets.
+### How the Model Addresses the Question/Problem the Team is Solving
+This sentiment analysis natural language processing model will compliment the linear regression model by showcasing general sentiment about current gas prices from tweets.
 
 <br>
 
-### The Data
+## The Data
 We will be collecting data from multiple locations:
 
 + [Twitter](https://twitter.com/) - Number of Tweets, Gas + Oil Tweets
