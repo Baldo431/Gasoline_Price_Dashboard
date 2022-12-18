@@ -60,7 +60,7 @@ def twitter():
 
     # Convert tweet counts dataframe to dictionary.
     tweet_count.index = tweet_count.index.map(str)
-    tweet_dict = tweet_count.to_dict()
+    tweet_count_dict = tweet_count.to_dict()
 
 
     # RECENT TWEETS ======================================================
@@ -106,8 +106,26 @@ def twitter():
     all_tweets = all_tweets.dropna()
     all_tweets.to_csv('tweets_clean.csv') # (tweets_clean.csv = cleaned tweets)
 
-    # Convert all tweet dataframe to dictionary.
-    all_tweets.index = all_tweets.index.map(str)
-    all_tweets_dict = all_tweets.to_dict()
 
-    return tweet_dict, all_tweets_dict
+    ts_df = pd.DataFrame()
+    ts_list = []
+    append_data = []
+
+    for (columnName, columnData) in all_tweets.iteritems():
+        case = {columnName : columnData.values}
+        ts_list.append(case)
+
+    for i in range(len(ts_list)):
+        ts_series = pd.Series(ts_list[i], name='Raw_Text').rename_axis('Date').explode().reset_index()
+        append_data.append(ts_series)
+    ts_df = pd.concat(append_data)
+    ts_df = ts_df.reset_index()
+    ts_df = ts_df.drop(columns=['index'])
+
+    # Save transposed tweets to csv file.
+    ts_df.to_csv('transposed_tweets.csv')
+
+    ts_df.index = ts_df.index.map(str)
+    transposed_tweets_dict = ts_df.to_dict()
+
+    return tweet_count_dict, transposed_tweets_dict
