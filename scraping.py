@@ -1,99 +1,106 @@
-# Import Splinter and BeautifulSoup
-from splinter import Browser
-from bs4 import BeautifulSoup as soup
-from webdriver_manager.chrome import ChromeDriverManager
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
+# Import Dependencies
+from bs4 import BeautifulSoup,Comment
+import numpy as np
 import pandas as pd
-import datetime as dt
+import requests
+import datetime
 
-def scrape_all():
-    # Initiate headless driver for deployment
-    executable_path = {'executable_path': ChromeDriverManager().install()}
-    browser = Browser('chrome', **executable_path, headless=True)
 
-    # Run scrape functions
-    gas_prices = current_pricing(browser)
+def gas_diesel_price():
 
-    # Store results in dictionary
-    data = {
-        "todays_prices": gas_prices,
-        "last_modified": dt.datetime.now()
+    request_headers = {
+        'accept':
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'accept-encoding': 'gzip, deflate, br',
+        'accept-language': 'en-US,en;q=0.8',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/601.3.9'
     }
 
-    # End Splinter session
-    browser.quit()
+    # Gas Prices
 
-    return data
-
-# Retrieve current gas prices from AAA.com
-def current_pricing(browser):
-    # Add try/except for error handling
-    try:
-        # Visit the AAA site
+    with requests.Session() as session:
         url = 'https://gasprices.aaa.com/'
-        browser.visit(url)
+        response = session.get(url, headers=request_headers)
 
-        # Delay for loading the page
-        browser.is_element_present_by_css('div.list_text', wait_time=1)
-    except BaseException:
-        return None
+    soup = BeautifulSoup(response.content, 'html.parser')
+    df = pd.DataFrame()
 
-    prices_data = []
-    fuel_types = []
+    html_data = soup.find(class_="table-mob")
+    html_data2 = soup.find(class_="average-price")
 
-    # Convert the base url visited to html
-    prices_soup = soup(browser.html, 'html.parser')
+    date = [span.get_text() for span in html_data2.find_all("span")]
+    data = [td.get_text() for td in html_data.find_all("td")]
 
-    #Search for the objects that contain the fuel types and the fuel prices.
-    table_elem = prices_soup.find('table', class_='table-mob')
-    title_elem = table_elem.find_all('th')
-    prices_elem = table_elem.find('tbody').find_all('tr')[0].find_all('td')
+    CurrentDate = []
+    RegularPrice = []
+    MidGradePrice = []
+    PremiumPrice = []
+    DieselPrice = []
+    day = pd.to_datetime(date[0][11:])
 
-    # Extract the text for fuel types
-    for item in title_elem:
-        if item.get_text() != '':
-            fuel_types.append(item.get_text())
-            
-    # Extract the text for fuel prices
-    for item in prices_elem:
-        if item.get_text()[0] == '$':
-            prices_data.append(item.get_text())
+    CurrentDate.append(day)
+    RegularPrice.append(round(float(data[1][1:]),2))
+    MidGradePrice.append(round(float(data[2][1:]),2))
+    PremiumPrice.append(round(float(data[3][1:]),2))
+    DieselPrice.append(round(float(data[4][1:]),2))
 
-    # Combine the two lists into a dictionary.
-    prices_dict = dict(zip(fuel_types, prices_data))
-    return prices_dict
+    df['Date'] = CurrentDate
+    df['Regular'] = RegularPrice
+    df['MidGrade'] = MidGradePrice
+    df['Premium'] = PremiumPrice
+    df['Diesel'] = DieselPrice
 
+    gas = pd.read_csv("Resources/data/gas-diesel-prices.csv")
+    gas['Date'] = pd.to_datetime(gas['Date'])
+    gas = pd.concat([gas, df], ignore_index = True)
+    gas = gas.drop(columns=['Unnamed: 0'])
+    gas = gas.drop_duplicates()
+    gas.to_csv('Resources/data/gas-diesel-prices.csv')
 
-def historical_pricing():
-    # Import static csv data into dataframe
-    crude_hist_df = pd.read_csv('./Resources/data/crude_price_history.csv')
-    gas_hist_df = pd.read_csv('./Resources/data/gas_price_history.csv', header=2)
+    # Oil Prices
 
-    # Clean gas dataframe
-    gas_hist_df['Date'] = pd.to_datetime(gas_hist_df['Date'])
-    gas_hist_df['Date'].dropna()
-    gas_hist_df.rename(columns={
-    gas_hist_df.columns[4]:"Weekly US Regular Price",
-    gas_hist_df.columns[7]:"Weekly US Midgrade Price",
-    gas_hist_df.columns[10]:"Weekly US Premium Price",
-    gas_hist_df.columns[13]:"Weekly US No2 Diesel Price"}, 
-    inplace=True)
-    gas_hist_df = gas_hist_df[["Date","Weekly US Regular Price","Weekly US Midgrade Price","Weekly US Premium Price", "Weekly US No2 Diesel Price"]]
+    with requests.Session() as session:
+        url = 'https://www.marketwatch.com/investing/future/cl.1'
+        response2 = session.get(url, headers=request_headers)
 
-    # Filter gas dataframe to only include data from last year.
-    now = datetime.now()
-    monday = now - timedelta(days = now.weekday()) - relativedelta(years=1)
-    gas_hist_filtered = gas_hist_df[gas_hist_df['Date'] >= monday]
+    soup2 = BeautifulSoup(response2.content, 'html.parser')
+    df2 = pd.DataFrame()
 
-    # Convert gas dataframe to dictionary in order to import to mongodb.
-    gas_hist_filtered.reset_index(inplace=True)
-    gas_hist_filtered.drop(['index'], axis=1, inplace=True)
-    gas_hist_filtered.index = gas_hist_filtered.index.map(str)
-    gas_dict = gas_hist_filtered.to_dict()
+    html_data3 = soup2.find('th', attrs={'class':'table__heading'})
+    html_data4 = soup2.find('td', attrs={'class':'table__cell u-semi'})
 
-    # Convert crude oil dataframe to dictionary in order to import to mongodb.
-    crude_hist_df.index = crude_hist_df.index.map(str)
-    crude_dict = crude_hist_df.to_dict()
+    html_data3 = html_data3.text.replace('\n    {\n        ','{')
+    html_data3 = html_data3.replace('\n    }\n    ','}')
+    html_data4 = html_data4.text.replace('\n    {\n        ','{')
+    html_data4 = html_data4.replace('\n    }\n    ','}')
+    pre_date = pd.to_datetime(html_data3[17:])
+    pre_price = html_data4[1:]
 
-    return gas_dict, crude_dict
+    date = []
+    crude = []
+    date.append(pre_date)
+    crude.append(round(float(pre_price),2))
+    df2["Date"] = date
+    df2["Crude Closing"] = crude
+
+    oil_df = pd.read_csv("Resources/data/oil-prices.csv")
+    oil_df['Date'] = pd.to_datetime(oil_df['Date'])
+    oil_df = pd.concat([oil_df, df2], ignore_index = True)
+    oil_df = oil_df.drop(columns=['Unnamed: 0'])
+    oil_df = oil_df.drop_duplicates()
+    oil_df.to_csv('Resources/data/oil-prices.csv')
+
+    # Merge DataFrames
+
+    oil_gas_df = pd.merge(gas, oil_df, on=["Date", "Date"])
+    oil_gas_df.sort_values(by=['Date'], inplace=True)
+
+    # Convert gas price data dataframe to dictionary.
+    oil_gas_df.index = oil_gas_df.index.map(str)
+    oil_gas_dict = oil_gas_df.to_dict()
+
+    current_gas_dict = df.iloc[0].to_dict()
+    latest_crude_price = oil_gas_df.iloc[-1][-1]
+
+    return latest_crude_price, current_gas_dict, oil_gas_dict
