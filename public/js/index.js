@@ -118,7 +118,7 @@ function buildLineChart(sample) {
         title: "<b>Weekly Avg. Gas Price by Fuel Type</b>",
         xaxis: {title: "Date"},
         yaxis: {title: "Price (USD)"}
-    }
+    };
 
     var data = [trace1, trace2, trace3, trace4];
 
@@ -128,10 +128,12 @@ function buildLineChart(sample) {
 
 function buildSentimentChart(sentiment_dict){
 
-    var json_obj = sentiment_dict
+    var json_obj = sentiment_dict;
+    var total = json_obj.Negative + json_obj.Neutral + json_obj.Positive;
+    console.log(total);
 
     var trace1 = {
-        x: [json_obj.Positive],
+        x: [(json_obj.Positive/total)*100],
         y: [''],
         name: 'Positive',
         orientation: 'h',
@@ -140,7 +142,7 @@ function buildSentimentChart(sentiment_dict){
     };
       
     var trace2 = {
-        x: [json_obj.Neutral],
+        x: [(json_obj.Neutral/total)*100],
         y: [''],
         name: 'Neutral',
         orientation: 'h',
@@ -149,7 +151,7 @@ function buildSentimentChart(sentiment_dict){
     };
 
     var trace3 = {
-        x: [json_obj.Negative],
+        x: [(json_obj.Negative/total)*100],
         y: [''],
         name: 'Negative',
         orientation: 'h',

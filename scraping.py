@@ -20,7 +20,7 @@ def gas_diesel_price():
     with requests.Session() as session:
         url = 'https://gasprices.aaa.com/'
         response = session.get(url, headers=request_headers)
-
+    
     soup = BeautifulSoup(response.content, 'html.parser')
     df = pd.DataFrame()
 
