@@ -155,6 +155,8 @@ We were able to access the historic gas and diesel prices from Statistica. From 
 ### Crude Oil Prices (scraping.py)
 To access the current crude oil prices, we scraped the closing price oil on MarketWatch. MarketWatch is a website that provides financial information, business news, analysis, and stock market data. Since the crude oil prices are updated along with the stock exchange, the data does not include weekends. This follows a similar process to scraping the gas & diesel prices.
 
+![scraping](https://user-images.githubusercontent.com/29410712/208578865-9de62125-b4de-4266-9e2c-9d3a953bd3bb.jpg)
+
 ## Database
 
 <br>
