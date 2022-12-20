@@ -1,9 +1,7 @@
 # Import Dependencies
 from bs4 import BeautifulSoup,Comment
-import numpy as np
 import pandas as pd
 import requests
-import datetime
 
 
 def gas_diesel_price():

@@ -1,5 +1,3 @@
-# Gas & Oil Linear Regression Model
-import os
 import numpy as np
 import pandas as pd
 import pickle
@@ -60,4 +58,4 @@ def analyze_sentiment(tweets_df):
 
     # Convert and return the finished dataframe
     tweets_df.index = tweets_df.index.map(str)
-    return tweets_df.to_dict()
+    return tweets_df.to_dict('records')
