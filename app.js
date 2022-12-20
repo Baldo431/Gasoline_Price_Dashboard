@@ -28,9 +28,10 @@ app.get("/", (req, res) =>{
 
 // route to retrieve whole collection
 app.get("/results/:colName", async (req, res) =>{
-    res.json(await findAll(req.params.colName));
+    res.json(await findAll(req.params.colName, req.query));
 })
 
+// route to determine what html file is being served up
 app.get("/:fileName", (req, res) =>{
     if(req.params.fileName.includes(".html")){
         res.sendFile(path.join(__dirname, "public/views/", req.params.fileName));
@@ -48,11 +49,16 @@ async function main(){
     }
 }
 
-async function findAll(colName){
-    const cursor = db.collection(colName).find({});
+async function findAll(colName, query={}){
+    const cursor = db.collection(colName).find(query);
     const results = await cursor.toArray();
 
-    return JSON.stringify(results[0]);
+    if(Object.keys(query).length === 0){
+        return JSON.stringify(results[0]);
+    }
+    else{
+        return JSON.stringify(results);
+    }
 }
 
 

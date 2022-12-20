@@ -1,11 +1,9 @@
 # Import Dependencies
-import os
 import tweepy
 import pandas as pd
 from datetime import date
 from datetime import timedelta
 from splinter import Browser
-from bs4 import BeautifulSoup as soup
 from webdriver_manager.chrome import ChromeDriverManager
 
 
@@ -96,6 +94,7 @@ def twitter():
 
     tweets_list = []
 
+    print("Starting Process: Twitter API Call.")
     tweets = tweepy.Paginator(client.search_recent_tweets, query=query,
                             tweet_fields=['context_annotations', 'created_at'],
                             start_time=start, 
@@ -116,12 +115,14 @@ def twitter():
             'Text': item.text
         }, ignore_index = True)
 
+    print("Finished Process!")
+
     # Initiate headless driver for deployment
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)
 
     # Create a new column and add the scraped code
-    print("Starting Process: Scraping Tweet Embedding Code (Please Note that this may take a while.")
+    print("Starting Process: Scraping Tweet Embedding Code (Please note that this may take a while.)")
     recent_tweets_df['Embed_Code'] = recent_tweets_df['Tweet_ID'].apply(get_embed_code, browser=browser)
     browser.quit()
     print("Finished Process!")

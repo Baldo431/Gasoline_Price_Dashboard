@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>About Us</title>
+    <title>About</title>
 </head>
 <body>
 
@@ -21,12 +21,67 @@
 
     
     <!-- Header -->
-    <div class="w3-display-container w3-animate-opacity">    
+    <header class="w3-display-container w3-theme w3-animate-opacity w3-padding-16" id="myHeader">
+        <i class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
+        <div class="w3-padding-16"></div>
+        <div class="w3-center">
+            <img src="https://www.w3schools.com/w3images/sailboat.jpg" alt="boat" style="width:100%;min-height:350px;max-height:600px;">
+        </div>
+    </header>
+    <!-- <div class="w3-display-container w3-animate-opacity">    
         <img src="https://www.w3schools.com/w3images/sailboat.jpg" alt="boat" style="width:100%;min-height:350px;max-height:600px;">
         <div class="w3-display-topleft w3-container">
             <i class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
         </div>
+    </div> -->
+
+    <div class="w3-row-padding w3-center w3-margin-top">
+        <h1 id="the-project"><strong>The Project: Overview</strong></h1>
     </div>
+    
+    <div class="w3-row-padding w3-margin-top">
+        <div class="w3-third w3-center">
+          <div class="w3-card w3-container" style="height:620px">
+                <h3 id="about">About</h3><br><br>
+                <p>In today's modern world, fuel is an essential part of everyday life. It helps us get to work on time, receive packages when we order products online, fuels some of the machinery that helps grow our food, and does so many more things. However, in recent events, the price of fuel has seen significant fluctuation causing worries in the average American as the price begins to take a chunk out of their wallet.</p>
+          </div>
+    </div>
+
+        <div class="w3-third w3-center">
+            <div class="w3-card w3-container" style="height:620px">
+                <h3 id="goal">Goal</h3><br><br>
+                <p>The goal is to create a dashboard hosted on a webpage that will provides users with fuel related information. In particular, the dashboard will predict future gasoline prices and show a graphic representing user sentiment on twitter surrounding gasoline and oil. To compliment this information, some of the twitter posts will be showcased and the historical gasoline and oil data will be displayed on a line graph.</p>
+            </div>
+        </div>
+
+        <div class="w3-third">
+            <div class="w3-card w3-container" style="height:620px">
+                <h3 class="w3-center" id="technologies-used">Technologies Used</h3><br><br>
+                <ul>
+                <li>
+                <p>Python</p>
+                </li>
+                <li>
+                <p>Javascript</p>
+                </li>
+                <li>
+                <p>MongoDB</p>
+                </li>
+                <li>
+                <p>Supervised Learning: Linear Regression</p>
+                </li>
+                <li>
+                <p>Natural Language Processing: Sentiment Analysis</p>
+                </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-padding-64">
+        <hr>
+    </div>
+
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
     <script src="js/index.js"></script>
