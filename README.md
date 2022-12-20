@@ -131,23 +131,29 @@ This sentiment analysis natural language processing model will compliment the li
 
 <br>
 
-## The Data
+## Collecting Data
 We will be collecting data from multiple locations:
 
 + [Twitter](https://twitter.com/) - Number of Tweets, Gas + Oil Tweets
 + [Statistica](https://www.statista.com/) - Historic Gas + Diesel Prices
 + [AAA](https://gasprices.aaa.com/) - Current Gas + Diesel Prices
 + [Kaggle](https://www.kaggle.com/datasets/sc231997/crude-oil-price) - Historic Crude Oil Prices
++ [MarketWatch](https://www.marketwatch.com/investing/future/cl.1) - Current Crude Oil Prices
 
-### Scraping Twitter
+### Scraping Twitter (twitter_data.py)
 Twitter is an American social networking service where individuals can microblog in a form of "Tweet". There are many limitations of accessing Twitter. Twitter's API allows access to recent data up to a week old and retrieve 500,000 Tweets per month. We will be scraping all Tweets that include the words: "gas" and "oil".
 
 To scrape the data from Twitter, we created a Twitter account and applied to access the API. Once we got accepted, we used the API key to connect to Twitter. We were able to collect the number of Tweets and all Tweets that included the words: "gas" and "oil" from the past seven days.
 
 In order to grab data longer than seven days from Twitter, we scraped new Tweets every day and added it to the previous combined data (`tweets.csv` and `tweet_count.csv`).
 
-### Scraping AAA + Statistica
-We were able to access the historic gas and diesel prices from Statistica. From there we needed to scrape AAA to get the current gas prices. Similar to the process of scraping Twitter, we added the new data from AAA to the historic data from Statistica to create the current gas price data.
+![tweepy-process](https://user-images.githubusercontent.com/29410712/208571508-260f3818-9f92-45b5-822f-fdea08f5ed1f.png)
+
+### Gas & Diesel Prices (scraping.py)
+We were able to access the historic gas and diesel prices from Statistica. From there we needed to scrape AAA to get the current gas prices. BeautifulSoup is a Python package for parsing HTML and XML documents. It creates a parse tree for parsed pages that can be used to extract data from HTML, which is useful for web scraping. By using this package and the HTML source code from the webpage, we were able to extract the current price of gasoline and diesel. Similar to the process of scraping Twitter, we added the new data from AAA to the historic data from Statistica to create the current gas price data.
+
+### Crude Oil Prices (scraping.py)
+To access the current crude oil prices, we scraped the closing price oil on MarketWatch. MarketWatch is a website that provides financial information, business news, analysis, and stock market data. Since the crude oil prices are updated along with the stock exchange, the data does not include weekends. This follows a similar process to scraping the gas & diesel prices.
 
 ## Database
 
