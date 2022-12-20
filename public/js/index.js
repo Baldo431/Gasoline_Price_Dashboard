@@ -50,19 +50,19 @@ function buildTable(current_data, future_data) {
         cell.text(`$${myJSON[x].toFixed(2)}`);
     })
 
-    // Parse data into JSON format
-    myJSON = JSON.parse(future_data)
+    // // Parse data into JSON format
+    // myJSON = JSON.parse(future_data)
 
-    //Add row header
-    row = tbody.append("tr");
-    cell = row.append("td");
-    cell.text("Predicted Average");
+    // //Add row header
+    // row = tbody.append("tr");
+    // cell = row.append("td");
+    // cell.text("Predicted Average");
 
-    //Iterate through data and add todays gas prices
-    fuels.forEach(x => {
-        let cell = row.append("td");
-        cell.text(`$${myJSON[x].toFixed(2)}`);
-    })
+    // //Iterate through data and add todays gas prices
+    // fuels.forEach(x => {
+    //     let cell = row.append("td");
+    //     cell.text(`$${myJSON[x].toFixed(2)}`);
+    // })
 }
 
 function jsonValueExtract(sample, colName){
@@ -107,31 +107,45 @@ function buildLineChart(sample) {
         name: 'Diesel'
     };
 
-    // var trace5={
-    //     x:gasDates,
-    //     y:jsonValueExtract(myJSON, "Crude Closing"),
-    //     type: 'scatter',
-    //     name: 'Crude Oil'
-    // };
+    var trace5={
+        x:gasDates,
+        y:jsonValueExtract(myJSON, "Crude Closing"),
+        type: 'scatter',
+        name: 'Crude Oil'
+    };
     
+    // Plot the first chart.
     var lineLayout={
         title: "<b>Weekly Avg. Gas Price by Fuel Type</b>",
         xaxis: {title: "Date"},
         yaxis: {title: "Price (USD)"}
-    }
+    };
 
-    var data = [trace1, trace2, trace3, trace4];
+    var data = [trace1, trace4];
 
     Plotly.newPlot('lineChart01', data, lineLayout);
+
+    // Plot the second chart.
+    var lineLayout2={
+        title: "<b>Weekly Avg. Crude Oil Price</b>",
+        xaxis: {title: "Date"},
+        yaxis: {title: "Price (USD)"}
+    };
+
+    var data2 = [trace5];
+
+    Plotly.newPlot('lineChart02', data2, lineLayout2);
 
 }
 
 function buildSentimentChart(sentiment_dict){
 
-    var json_obj = sentiment_dict
+    var json_obj = sentiment_dict;
+    var total = json_obj.Negative + json_obj.Neutral + json_obj.Positive;
+    console.log(total);
 
     var trace1 = {
-        x: [json_obj.Positive],
+        x: [(json_obj.Positive/total)*100],
         y: [''],
         name: 'Positive',
         orientation: 'h',
@@ -140,7 +154,7 @@ function buildSentimentChart(sentiment_dict){
     };
       
     var trace2 = {
-        x: [json_obj.Neutral],
+        x: [(json_obj.Neutral/total)*100],
         y: [''],
         name: 'Neutral',
         orientation: 'h',
@@ -149,7 +163,7 @@ function buildSentimentChart(sentiment_dict){
     };
 
     var trace3 = {
-        x: [json_obj.Negative],
+        x: [(json_obj.Negative/total)*100],
         y: [''],
         name: 'Negative',
         orientation: 'h',
