@@ -25,13 +25,6 @@ Some things to note are that:
 - The web page back end can be found in the `app.js` file and the front end components can be found under the `public` folder.
 - The only interactive elements at the moment are the navigation bar and the built in interactions from the Plotly.js charts.
 
-
-### Future Work
-The next step is to complete building the other web pages and integrate all the data in the database into the home page.
-#### Future Work for Machine Learning Models - 12/14/2022
-The next step for the linear regression machine learning model is to include a function that takes in current gas prices from AAA's website and predicts future gas prices. The next step for the sentiment analysis natural language processing model is to fix the "for loop" issue and generate predictions and an accuracy score. Currently, the models are merged into one python file, and will be updated once the next steps are complete.
-
-
 <br>
 
 ### Presentation
@@ -77,14 +70,15 @@ From a high level overview, static (e.g. downloaded) and live (e.g. scraping) da
 
 <br>
 
-### Linear Regression (see gas_oil_ML.ipynb)
+### Linear Regression Models for both Gas and Diesel (see gas_oil_ML.ipynb)
 
 #### Description of Preliminary Data Preprocessing
-Starting with crude oil data (1983 to present) and gas and diesel price data (1995 to 2021), the data are cleaned to fit into a linear regression machine learning model.
-The data are loaded into two dataframes (gas_df and crude_df). The cleaned gas price dataframe includes all formulations of retail gasoline and diesel prices in a MM/DD/YYYY format with samples from each month starting in January 1995 to January 2021. The cleaned crude oil dataframe is in the same format as the cleaned gas price dataframe: MM/DD/YYYY format with monthly samples from January 1995 to January 2021.
+Starting with historical crude oil data (1983 to 2021) and historical gas and diesel price data (1995 to 2021), the data are cleaned to fit into a linear regression machine learning model and loaded into two dataframes (hist_crude_df and hist_gas_df).
+The cleaned gas price dataframe includes all formulations of retail gasoline and diesel prices in a MM/DD/YYYY format with samples from each month starting in January 1995 to January 2021. The cleaned crude oil dataframe is in the same format as the cleaned gas price dataframe: MM/DD/YYYY format with monthly samples from January 1995 to January 2021.
+Using current crude oil data (February 2021 to December 2022) and current gas and diesel price data (January 2021 to December 2022), the data are cleaned to line up with the historical dataframes' formatting. The data are loaded into two dataframes (current_crude_df and current_gas_df). Once the four dataframes (historical and current and crude oil and gas) were accurately cleaned, the data were loaded into two dataframes (gas_df and crude_df).
 
 #### Description of Preliminary Feature Engineering and Preliminary Feature Selection
-To fit a linear regression model with crude oil and gas price data to establish and explore relationships between the data.
+To fit a linear regression model with historical and current crude oil and gas price data (and then fit a model with historical and current crude oil and diesel price data) to establish and explore relationships between the data.
 
 #### Explanation of Model Choice, including Limitations and Benefits 
 This linear regression model is the best model because historically, crude oil prices and gas prices have a linear relationship, so there is no need to complicate the relationship with other, more complex models.
@@ -96,13 +90,15 @@ The data are split into 80% training and 20% testing.
 Not applicable.
 
 #### Description of How the Model Has Been Trained Thus Far and Any Additional Training
-After adding AAA current gas price data and data cleaning, this model now includes a function that takes in current gas prices (into the existing linear regression model with past gas prices) and predicts future gas prices.
+After adding AAA current gas price data and MarketWatch's current crude oil prices and data cleaning, this model now includes a function that takes in current gas prices (into the existing linear regression model with past gas prices) and predicts future gas prices.
 
 #### Description of Current Accuracy Score
-The current accuracy score is 0.903 with the new fucntion, which is an improvement from the previous accuracy score (0.873).
+The current accuracy score is 0.0906 with the current gas and crude oil prices included. Previously, the model's accuracy score was 0.903 (after taking in current gas prices), and before, with just historical crude and gas prices, the accuracy was 0.873). The r-squared for the regular gas model prediction from training data is 0.907 and the r-squared from testing data is 0.873. The r-squared for the diesel model prediction from training data is 0.864 and the r-squared from testing data is 0.821.
+
+Since confusion matrices cannot be done on regressors, neither of these models have them. 
 
 #### How the Model Addresses the Question/Problem the Team is Solving 
-This linear regression model will predict future gas prices in order to help American customers make more informed decisions about their gas consumption.
+This linear regression model will predict current gas and diesel prices in order to help American customers make more informed decisions about their fuel consumption.
 
 <br>
 
