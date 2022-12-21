@@ -116,7 +116,7 @@ function buildLineChart(sample) {
     
     // Plot the first chart.
     var lineLayout={
-        title: "<b>Weekly Avg. Gas Price by Fuel Type</b>",
+        title: "<b>Daily Avg. Price by Fuel Type</b>",
         xaxis: {title: "Date"},
         yaxis: {title: "Price (USD)"}
     };
@@ -127,7 +127,7 @@ function buildLineChart(sample) {
 
     // Plot the second chart.
     var lineLayout2={
-        title: "<b>Weekly Avg. Crude Oil Price</b>",
+        title: "<b>Daily Avg. Crude Oil Price</b>",
         xaxis: {title: "Date"},
         yaxis: {title: "Price (USD)"}
     };
@@ -142,7 +142,6 @@ function buildSentimentChart(sentiment_dict){
 
     var json_obj = sentiment_dict;
     var total = json_obj.Negative + json_obj.Neutral + json_obj.Positive;
-    console.log(total);
 
     var trace1 = {
         x: [(json_obj.Positive/total)*100],

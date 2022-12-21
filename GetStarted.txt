@@ -1,0 +1,51 @@
+***************************
+* Preparation		  *
+***************************
+- software installations:
+Navigate to the download website for the software listed below and install them.
+mongodb
+node.js
+
+-pip installations:
+In your environment install the following packages using your relevant package manager.
+python
+numpy
+pandas
+tweepy
+beautifulsoup4 (bs4)
+splinter
+webdriver-manager
+textblob
+scikit-learn
+pymongo
+selenium
+pickle
+
+- npm installations:
+Once node.js is installed use the included package manager, npm, to install the following packages.
+express.js
+mongodb (Mongodb driver for node.js)
+
+- Other:
+Create a developer account on Twitter.
+twitter api (API token)
+
+
+***************************
+* Running the code	  *
+***************************
+
+Before running any of the code, do the following:
+- Ensure that there is a mongodb connection active. This will need to be active every time the code is run.
+- Generate a node.js project by heading to the root directory of the project and running "npm init -y". This only needs to be generated once.
+- Create a config.py file and save the bearer token from your twitter api account to a variable called "token".
+
+
+To pull all the data for the dashboard run logic.py using "python logic.py".
+(Note that the data pulling can take more than 10 minutes).
+
+To begin hosting the dashboard run the backend application using "node app.js".
+
+To view the generated website navigate to "http://localhost:8080/" on your preferred web browser.
+
+
