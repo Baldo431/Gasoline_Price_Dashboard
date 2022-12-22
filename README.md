@@ -12,11 +12,14 @@ The goal is to create a dashboard hosted on a webpage that will provides users w
 - Python
 - Javascript
 - MongoDB
-- Supervised Learning: Linear Regression
-- Natural Language Processing: Sentiment Analysis
+- Supervised Learning: Linear Regression (sci-kit learn)
+- Natural Language Processing: Sentiment Analysis (textblob)
 
 ### Current Status
-12/14/2022 - This week the deliverables for Segment 3 were submitted. The biggest progress this week was the creation of the web pages and connecting them to the database. We were able to successfully retrieve information from mongoDB using node.js and express.js. However, we ran into issues incorporating the machine learning predictions into the web page as the module that inserts the machine learngin data into the database has not been completed yet. Additionally, the connection to the database posed an unprecedented challenge as Node.js and Express.js was new technology that had to be learned and led to some of the data not being added to the web page on time. See Figure 6 in the [Dashboard](#dashboard) section below to see what the current home page looks like.
+12/21/2022 - This week the deliverables for Segment 4 will be submitted. The biggest progress this week was the creation of the web pages and connecting them to the database. We were able to successfully retrieve information from mongoDB using node.js and express.js. 
+The supervised machine learning models' predictions were incorporated into the dashboard, so the webpage shows predictions for gas and diesel prices based on current and historical crude oil prices. Additionally, the webpage now hosts graphs depicting how well the testing data compared to the training data (see pink and blue graphs for diesel and green and orange graphs for gas prices). The natural language processing sentiment analysis was incorporated into the dashboard as well and a histogram depicting the distribution of consumers' sentiment was included (see pink and blue histogram). 
+Additionally, the connection to the database posed an unprecedented challenge as Node.js and Express.js was new technology that had to be learned and led to some of the data not being added to the web page on time. See Figure 6 in the [Dashboard](#dashboard) section below to see what the current home page looks like.
+To get started on your machine, download the requiremnts file (see GetStarted.txt).
 
 Some things to note are that:
 - The web page is hosted locally. To run it on localhost it requires installation of node.js, express.js, and the mongodb driver.
@@ -35,7 +38,7 @@ Click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrY
 ## **Workflow**
 
 ### Project Outline
-From a high level overview, static (e.g. downloaded) and live (e.g. scraping) data is being taken using python to then be fed to machine learning models to generate price predictions and evaluate sentiment polarity. All this pulled data and machine learning output is then connected and uploaded to a MongoDb database where it sits until the webpage needs it. Below are four figures increasing in specificity that outline how the project functions.
+From a high level overview, static (e.g. downloaded) and live (e.g. scraping) data is being taken using Python to then be fed to machine learning models to generate price predictions and evaluate sentiment, or emotions expressed. All this pulled data and machine learning output is then connected and uploaded to a MongoDb database where it sits until the webpage needs it. Below are four figures increasing in specificity that outline how the project functions.
 
 
 <p align="center">
