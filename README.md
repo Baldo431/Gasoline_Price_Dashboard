@@ -1,4 +1,5 @@
-# **Gasoline Price Predictor**
+# **Gasoline Price Dashboard**
+
 
 ## **Overview**
 
@@ -6,7 +7,9 @@
 In today’s modern world, fuel is an essential part of everyday life. It helps us get to work on time, receive packages when we order products online, fuels some of the machinery that helps grow our food, and does so many more things. However, in recent events, the price of fuel has seen significant fluctuation causing worries in the average American as the price begins to take a chunk out of their wallet. 
 
 ### Goal
-The goal is to create a dashboard hosted on a webpage that will provides users with fuel related information. In particular, the dashboard will predict future gasoline prices and show a graphic representing user sentiment on twitter surrounding gasoline and oil. To compliment this information, some of the twitter posts will be showcased and the historical gasoline and oil data will be displayed on a line graph.
+The goal is to create a dashboard hosted on a webpage that will provide users with fuel related information. In particular, the dashboard will focus on two sub-topics.
+1. Analyze the relationship between Crude Oil & Gasoline Prices using a linear regression model.
+2. Identify the sentiment in twitter posts and determine if sentiment can reliably be extracted from the posts.
 
 ### Technologies Used
 - Python
@@ -15,31 +18,30 @@ The goal is to create a dashboard hosted on a webpage that will provides users w
 - Supervised Learning: Linear Regression (sci-kit learn)
 - Natural Language Processing: Sentiment Analysis (textblob)
 
-### Current Status
-12/21/2022 - This week the deliverables for Segment 4 will be submitted. The biggest progress this week was the creation of the web pages and connecting them to the database. We were able to successfully retrieve information from mongoDB using node.js and express.js. 
-The supervised machine learning models' predictions were incorporated into the dashboard, so the webpage shows predictions for gas and diesel prices based on current and historical crude oil prices. Additionally, the webpage now hosts graphs depicting how well the testing data compared to the training data (see pink and blue graphs for diesel and green and orange graphs for gas prices). The natural language processing sentiment analysis was incorporated into the dashboard as well and a histogram depicting the distribution of consumers' sentiment was included (see pink and blue histogram). 
-Additionally, the connection to the database posed an unprecedented challenge as Node.js and Express.js was new technology that had to be learned and led to some of the data not being added to the web page on time. See Figure 6 in the [Dashboard](#dashboard) section below to see what the current home page looks like.
-To get started on your machine, download the requiremnts file (see GetStarted.txt).
+<br>
 
-Some things to note are that:
-- The web page is hosted locally. To run it on localhost it requires installation of node.js, express.js, and the mongodb driver.
-- The twitter data has not been added to the home web page.
-- Dummy data was used in stead of the twitter data and current gas prices prediction.
-- The web page back end can be found in the `app.js` file and the front end components can be found under the `public` folder.
-- The only interactive elements at the moment are the navigation bar and the built in interactions from the Plotly.js charts.
+### Running the Project
+If you would like to run this project on your machine please refer to the `GetStarted.txt` file to see what software is required and how to run the dashboard.
 
 <br>
 
 ### Presentation
-Click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrYTq0hdkg3Yi2Cu_y0/edit?usp=sharing) to see the presentation hosted on Google Slides.
+Click [here](https://youtu.be/iJ34HNs7qag) to see the presentation hosted on Google Slides.
 
 <br>
 
-## **Workflow**
+### Dashboard
+Click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrYTq0hdkg3Yi2Cu_y0/edit?usp=sharing) for a walkthorugh of our dashboard on YouTube.
 
-### Project Outline
-From a high level overview, static (e.g. downloaded) and live (e.g. scraping) data is being taken using Python to then be fed to machine learning models to generate price predictions and evaluate sentiment, or emotions expressed. All this pulled data and machine learning output is then connected and uploaded to a MongoDb database where it sits until the webpage needs it. Below are four figures increasing in specificity that outline how the project functions.
+<br>
 
+## **Project Structure**
+
+### High Level Overview (See Figure 1)
+- We start with data sources which represent the process of taking the raw data from various sources and preparing it to be suitable for analysis.
+- Then, the data sources are fed into the mysterious black box which represents the process taken to extract the information that will be presented in our dashboard. 
+- Once the right information has been generated, all of it is inserted into a NoSQL database which acts like a barrier between the data gathering and the data visualization. The database fully separates the two. The dashboard does not talk to the code analyzing the data; it simply pulls what has already been analyzed and inserted into the database.
+- Finally, the dashboard is generated in a web page format.
 
 <p align="center">
     <img src="Resources/images/HighLevel_Overview.PNG"><br>
@@ -48,6 +50,12 @@ From a high level overview, static (e.g. downloaded) and live (e.g. scraping) da
 
 <br>
 
+### Data Flow (See Figure 2)
+
+- Current Pricing Data - this data is scraped and cleaned before being fed to the linear regression model to aggregate with the historical data. Additionally, this data flows directly to the database for plotting on the webpage.
+- Twitter Data - this data is pulled from the Twitter api and cleaned before being passed to the sentiment analysis model. Once the sentiment score is added it goes back one more time through the ETL process before going into the database.
+- Kaggle Data - this data is downloaded statically and provided to the machine learning model to provide the bulk of the historical data that will be used in the linear regression model.
+
 <p align="center">
     <img src="Resources/images/Data_Flow.PNG"><br>
     Figure 2 (Data Flow)
@@ -55,16 +63,14 @@ From a high level overview, static (e.g. downloaded) and live (e.g. scraping) da
 
 <br>
 
-<p align="center">
-    <img src="Resources/images/Data_Analysis.PNG"><br>
-    Figure 3 (Data Analysis Breakdown)
-</p>
+### File Structure (See Figure 3)
+The project has two sides, the python side where data is gathered and the javascript side where data is visualized. These two sides are divided by the database and don't interact with each other. 
 
-<br>
+In the python side, the structure centralizes around the `logic.py` file which calls and retrieves the information from all the other functions hosted on the various python modules. One thing to note here, is that we currently have two files that involve machine learning `ml_analyze.py` and `gas_oil_LR_twitter_NLP.py`. The intent was for ml_analyze.py to generate the machine learning analysis images and attach the sentiment score to the tweet data datframe. However, currently `ml_analyze.py` handles appending the score  to the dataframe and `gas_oil_LR_twitter_NLP.py` generates all the machine learning images which are statically hosted in the `public/images` folder.
 
 <p align="center">
     <img src="Resources/images/Rough_File_Structure.PNG"><br>
-    Figure 4 (Rough File Structure)
+    Figure 3 (Rough File Structure)
 </p>
 
 <br>
@@ -147,6 +153,9 @@ To scrape the data from Twitter, we created a Twitter account and applied to acc
 In order to grab data longer than seven days from Twitter, we scraped new Tweets every day and added it to the previous combined data (`tweets.csv` and `tweet_count.csv`).
 
 ![tweepy-process](https://user-images.githubusercontent.com/29410712/208571508-260f3818-9f92-45b5-822f-fdea08f5ed1f.png)
+<p align="center">
+    Figure 4 (Tweepy Process)
+</p>
 
 ### Gas & Diesel Prices (scraping.py)
 We were able to access the historic gas and diesel prices from Statistica. From there we needed to scrape AAA to get the current gas prices. BeautifulSoup is a Python package for parsing HTML and XML documents. It creates a parse tree for parsed pages that can be used to extract data from HTML, which is useful for web scraping. By using this package and the HTML source code from the webpage, we were able to extract the current price of gasoline and diesel. Similar to the process of scraping Twitter, we added the new data from AAA to the historic data from Statistica to create the current gas price data.
@@ -155,8 +164,22 @@ We were able to access the historic gas and diesel prices from Statistica. From 
 To access the current crude oil prices, we scraped the closing price oil on MarketWatch. MarketWatch is a website that provides financial information, business news, analysis, and stock market data. Since the crude oil prices are updated along with the stock exchange, the data does not include weekends. This follows a similar process to scraping the gas & diesel prices.
 
 ![scraping](https://user-images.githubusercontent.com/29410712/208578865-9de62125-b4de-4266-9e2c-9d3a953bd3bb.jpg)
+<p align="center">
+    Figure 5 (Scraping Process)
+</p>
+
 
 ## Database
+
+For the database a NoSQL model was used, in particular MongoDB. MongoDB was selected as originally, the plan was to generate the images associated with the machine learning analysis in python and save the images into the database.Thus, necessitating the need for a NoSQL model.
+
+Additionally, the other data that was being inserted did not require complex lookups or joins so using an SQL database did not provide any additional benefits.
+
+Ultimately, however, due to time constraints the generated images were linked directly on the webpage instead of being passed through the database. Rendering the use of a NoSQL model a moot point.
+
+Nonetheless, as MongoDB was our database of choice, we utilized PyMongo to insert our data thorugh python and used the MongoDB driver for node.js to retrive the data in javascript.
+
+See the code in `logic.py` and `app.js` to see the code interacting with the database.
 
 <br>
 
@@ -174,23 +197,26 @@ Four web pages were created with the following purposes.
 - CSS3 - Page styling.
 - Plotly.js - Fuel price line graph & sentiment graphic.
 - Node.js - Database connection.
-- Express.js - Middleware between front end and backend.
+- Express.js - Middleware for handling url routes.
 - JavaScript - Handle dynamic content (e.g. click events).
 
 ### Interactive Elements
-- Navigation Bar- clickable links allowing navigation between the About page and the Home page.
+- Navigation Bar- clickable links allowing navigation between the About page, Presentation Page and the Home page.
 - Twitter Post - clickable links directing the user to the original twitter post on Twitter.
-- User Info - clickable link redirecting the user to the respective collaborator’s github page.
+- Line and Bar Charts - interactive elements natively available from plotly.js
+
+### Storyboard
+The website design was originally storyboard to be comprised of only two web pages with the layouts seen in Figure 6. In the final iteration of our project, this was changed to be three pages with the main page having a drastically different look as seen in Figure 7.
 
 <p align="center">
     <img src="Resources/images/Storyboard.PNG"><br>
-    Figure 5 (Storyboard)
+    Figure 6 (Original Storyboard)
 </p>
 
 <br>
 
 <p align="center">
     <img src="Resources/images/Home_Page.png"><br>
-    Figure 6 (Home Page)
+    Figure 7 (Home Page)
 </p>
 

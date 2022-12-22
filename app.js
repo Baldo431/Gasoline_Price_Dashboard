@@ -41,6 +41,7 @@ app.get("/:fileName", (req, res) =>{
     }
 })
 
+// connect to the database
 async function main(){
     try{
         await client.connect();
@@ -49,6 +50,7 @@ async function main(){
     }
 }
 
+// helper function to find all documents in a collection matching a query.
 async function findAll(colName, query={}){
     const cursor = db.collection(colName).find(query);
     const results = await cursor.toArray();
@@ -61,37 +63,7 @@ async function findAll(colName, query={}){
     }
 }
 
-
-async function init(){
-    // Set up database connection
-    const client = new MongoClient(uri);
-    const db = client.db(dbName);
-
-    // Initialize containers for database data retrieval
-    let tableData = null;
-    let chartData = null;
-    let sentimentData = null;
-    let twitterData = null;
-
-
-    try{
-        await client.connect();
-        chartData = await findAll(db, "gas_history");
-        tableData = await findAll(db, "current_pricing");
-    } catch(e){
-        console.error(e);
-    }finally{
-        await client.close();
-    }
-
-    buildTable(tableData);
-}
-
-
-
-
-
-//init();
+// Initiate the database connection and begin listening for requests.
 main().catch(console.error);
 var listener = app.listen(port, ()=>{
     console.log('Your app is listenting on port ' + listener.address().port);

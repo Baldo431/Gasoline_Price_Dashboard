@@ -1,7 +1,6 @@
-//const { query } = require("express");
-
 const baseURL = "http://localhost:8080/"
 
+// function to gather all data from the database
 async function init(){
 
     await Promise.all([
@@ -28,7 +27,7 @@ async function init(){
 
 }
 
-
+// Build the table showing today's gas prices.
 function buildTable(current_data, future_data) {
     // First, clear out any existing data
     var tbody = d3.select("tbody");
@@ -49,22 +48,9 @@ function buildTable(current_data, future_data) {
         let cell = row.append("td");
         cell.text(`$${myJSON[x].toFixed(2)}`);
     })
-
-    // // Parse data into JSON format
-    // myJSON = JSON.parse(future_data)
-
-    // //Add row header
-    // row = tbody.append("tr");
-    // cell = row.append("td");
-    // cell.text("Predicted Average");
-
-    // //Iterate through data and add todays gas prices
-    // fuels.forEach(x => {
-    //     let cell = row.append("td");
-    //     cell.text(`$${myJSON[x].toFixed(2)}`);
-    // })
 }
 
+// Helper function to isolate the column data we want.
 function jsonValueExtract(sample, colName){
     let results = [];
     for( const x in sample[colName]){
@@ -73,10 +59,13 @@ function jsonValueExtract(sample, colName){
     return results;
 }
 
+// Build out both line charts.
 function buildLineChart(sample) {
+
     // Parse data into JSON format
     const myJSON = JSON.parse(sample)
 
+    // Extract the date field which will be constant across our traces.
     const gasDates = jsonValueExtract(myJSON, "Date");
 
     var trace1={
@@ -138,6 +127,7 @@ function buildLineChart(sample) {
 
 }
 
+// Build out the stacked bar chart for sentiment polarity.
 function buildSentimentChart(sentiment_dict){
 
     var json_obj = sentiment_dict;
@@ -182,6 +172,7 @@ function buildSentimentChart(sentiment_dict){
     Plotly.newPlot('barChart01', data, layout);
 }
 
+// Inserts the html code to show the sample tweets in the classical tweet format.
 function insert_tweets(neg_data, neut_data, pos_data){
     // Grab handle to containers where the tweets will go.
     var neg_container = d3.select("#negTweet");
@@ -207,6 +198,7 @@ function insert_tweets(neg_data, neut_data, pos_data){
 
 }
 
+// helper function for the collapsible navigation bar.
 function openNav(){
     var sideBar = d3.select("#mySidebar");
     sideBar.style("fontSize", "40px");
@@ -214,6 +206,7 @@ function openNav(){
     sideBar.style("display", "block");
 }
 
+// helper function for the collapsible navigation bar.
 function closeNav(){
     var sideBar = d3.select("#mySidebar");
     sideBar.style("display", "none");

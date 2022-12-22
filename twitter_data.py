@@ -13,6 +13,7 @@ from config import access_token
 from config import access_token_secret
 from config import token
 
+# Helper function to generate and scrape html code that allows for twitter posts to be embedded.
 def get_embed_code(tweet_id, browser):
     try:
         url='https://publish.twitter.com/#'
