@@ -23,17 +23,13 @@ The goal is to create a dashboard hosted on a webpage that will provide users wi
 ### Running the Project
 If you would like to run this project on your machine please refer to the `GetStarted.txt` file to see what software is required and how to run the dashboard.
 
-<br>
 
 ### Presentation
-Click [here](https://youtu.be/iJ34HNs7qag) to see the presentation hosted on Google Slides.
-
-<br>
+Click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrYTq0hdkg3Yi2Cu_y0/edit?usp=sharing) to see the presentation hosted on Google Slides.
 
 ### Dashboard
-Click [here](https://docs.google.com/presentation/d/10gvLuSyp35iwKA9KIDbKwRrCyrYTq0hdkg3Yi2Cu_y0/edit?usp=sharing) for a walkthorugh of our dashboard on YouTube.
+Click [here](https://youtu.be/iJ34HNs7qag) for a walkthorugh of our dashboard on YouTube.
 
-<br>
 
 ## **Project Structure**
 
