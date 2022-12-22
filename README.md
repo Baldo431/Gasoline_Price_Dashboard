@@ -80,6 +80,7 @@ In the python side, the structure centralizes around the `logic.py` file which c
 <br>
 
 ### Linear Regression Models for both Gas and Diesel (see gas_oil_ML.ipynb)
+Two linear regression models were created: one to predict __regular gas prices from crude oil prices__ and the other to predict __diesel prices from crude oil prices__. 
 
 #### Description of Preliminary Data Preprocessing
 Starting with historical crude oil data (1983 to 2021) and historical gas and diesel price data (1995 to 2021), the data are cleaned to fit into a linear regression machine learning model and loaded into two dataframes (hist_crude_df and hist_gas_df).
